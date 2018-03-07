@@ -1,11 +1,14 @@
 package arrayIndexList;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 import indexList.IndexList;
 
 public class ArrayIndexList<E> implements IndexList<E> {
-	private static final int INITCAP = 5; 
-	private static final int CAPTOAR = 5; 
-	private static final int MAXEMPTYPOS = 10; 
+	private static final int INITCAP = 1; 
+	private static final int CAPTOAR = 1; 
+	private static final int MAXEMPTYPOS = 2; 
 	private E[] element; 
 	private int size; 
 
@@ -17,13 +20,22 @@ public class ArrayIndexList<E> implements IndexList<E> {
 
 	public void add(int index, E e) throws IndexOutOfBoundsException {
 		if (index < 0 || element.length < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
-		this.moveDataOnePositionTR(index+1, element.length-1);
-		element[index] = (E)e; 
-		size++; 
+		if (element.length - size > MAXEMPTYPOS) {
+			this.changeCapacity(CAPTOAR);
+		}
+		else {
+			size++;
+			this.moveDataOnePositionTR(index+1, size);
+			element[index] = (E)e; 
+		 
+		}
 	}
 
 
 	public void add(E e) {
+		if (element.length - size > MAXEMPTYPOS) {
+			this.changeCapacity(CAPTOAR);
+		}
 		element[element.length] = (E)e; 
 		size++;
 	}
@@ -43,8 +55,9 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	public E remove(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || element.length -1 < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
 			E etr = element[index]; 
-			this.moveDataOnePositionTL(index+1, element.length+1);
 			size--;
+			this.moveDataOnePositionTL(index, size);
+			
 		return etr;
 	}
 
@@ -100,22 +113,23 @@ public class ArrayIndexList<E> implements IndexList<E> {
 
 	// The following two methods are to be implemented as part of an exercise
 	public Object[] toArray() {
-		// TODO es in Exercise 3
-		return null;
+		//Object[] arrayToReturn = new Object[element.length-1]; 
+		Object[] arrayToReturn = Arrays.copyOf(element, element.length); 	
+		return arrayToReturn;
 	}
 
 
 	@Override
 	public <T1> T1[] toArray(T1[] array) {
-		// TODO as in Exercise 3
-		return null;
+		T1[] result = (T1[]) Arrays.copyOf(element, element.length, array.getClass());
+		return result; 
 	}
 
 
 	@Override
 	public int capacity() {
 		
-		return 0;
+		return element.length;
 	}
 
 }
