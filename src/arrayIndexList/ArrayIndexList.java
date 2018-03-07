@@ -16,16 +16,16 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	
 
 	public void add(int index, E e) throws IndexOutOfBoundsException {
-		if (index < 0 || element.length < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
+		if (index < 0 || element.length + 1 < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
+		this.moveDataOnePositionTR(index, element.length-1);
 		element[index] = (E)e; 
+		size++; 
 	}
 
 
 	public void add(E e) {
-		int currentPos = 0;
-		element[currentPos] = (E)e; 
-		currentPos++; 
-		
+		element[element.length] = (E)e; 
+		size++;
 	}
 
 
@@ -41,9 +41,12 @@ public class ArrayIndexList<E> implements IndexList<E> {
 
 
 	public E remove(int index) throws IndexOutOfBoundsException {
-		if (index < 0 || element.length < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
-		// ADD AND MODIFY CODE AS REQUESTED BY EXERCISES
-		return null;
+		if (index < 0 || element.length -1 < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
+			E etr = element[index]; 
+			//element[index] = null;   //maybe remove this line of code as i think it's not necessary 
+			this.moveDataOnePositionTL(index+1, element.length+1);
+			size--;
+		return etr;
 	}
 
 
