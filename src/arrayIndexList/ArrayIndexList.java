@@ -16,8 +16,8 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	
 
 	public void add(int index, E e) throws IndexOutOfBoundsException {
-		if (index < 0 || element.length + 1 < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
-		this.moveDataOnePositionTR(index, element.length-1);
+		if (index < 0 || element.length < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
+		this.moveDataOnePositionTR(index+1, element.length-1);
 		element[index] = (E)e; 
 		size++; 
 	}
@@ -43,7 +43,6 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	public E remove(int index) throws IndexOutOfBoundsException {
 		if (index < 0 || element.length -1 < index) { throw new IndexOutOfBoundsException("The index value is not valid");}
 			E etr = element[index]; 
-			//element[index] = null;   //maybe remove this line of code as i think it's not necessary 
 			this.moveDataOnePositionTL(index+1, element.length+1);
 			size--;
 		return etr;
@@ -110,6 +109,13 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	public <T1> T1[] toArray(T1[] array) {
 		// TODO as in Exercise 3
 		return null;
+	}
+
+
+	@Override
+	public int capacity() {
+		
+		return 0;
 	}
 
 }
